@@ -1,0 +1,52 @@
+{
+  "name": "remind-rest",
+  "version": "1.0.0",
+  "productName": "restTime",
+  "main": "dist/main/index.js",
+  "scripts": {
+    "dev": "node scripts/dev.js",
+    "packageMac": "rm -rf ./dist && npx vite build && tsc && cp -r icon dist/icon & cp main/store.json dist/main/store.json && electron-packager . --overwrite",
+    "buildMac": "cp -r icon dist/icon && npx electron-builder --mac --arm64"
+  },
+  "build": {
+    "appId": "rest.time.lay4519",
+    "productName": "Lay",
+    "files": [
+      "node_modules/",
+      "dist/",
+      "package.json"
+    ],
+    "dmg": {
+      "contents": [
+        {
+          "x": 130,
+          "y": 220
+        },
+        {
+          "x": 410,
+          "y": 220,
+          "type": "link",
+          "path": "/Applications"
+        }
+      ]
+    },
+    "directories": {
+      "output": "release"
+    }
+  },
+  "dependencies": {
+    "gsap": "^3.3.4",
+    "vue": "^3.0.0-beta.14",
+    "vue-router": "^4.0.0-alpha.4"
+  },
+  "devDependencies": {
+    "@babel/core": "^7.10.2",
+    "@babel/register": "^7.10.1",
+    "@types/electron": "^1.6.10",
+    "@vue/compiler-sfc": "^3.0.0-beta.14",
+    "cross-env": "^7.0.2",
+    "electron": "^9.0.3",
+    "typescript": "3.9.5",
+    "vite": "^0.20.0"
+  }
+}
