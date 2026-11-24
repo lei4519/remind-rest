@@ -8,19 +8,18 @@
 <script>
 import {ref, watch, computed} from 'vue'
 import {useRoute} from 'vue-router'
-const { ipcRenderer } = require('electron')
 
 export default {
   setup() {
     const {query} = useRoute()
     const time = ref('')
     const close = () => {
-      ipcRenderer.send(query.type, {type: 'CLOSE'})
+      window.restTimer.closeRest()
     }
     const isMainScreen = ref(!!query.isMainScreen)
-    if (isMainScreen) {
-      ipcRenderer.send(query.type, {type: 'READY'})
-      ipcRenderer.on(query.type, (ipc, {time: {h, m, s}, done}) => {
+    if (isMainScreen.value) {
+      window.restTimer.restReady()
+      window.restTimer.onRestTick(({time: {h, m, s}, done}) => {
         time.value = `${h}:${m}:${s}`
         if (done) close()
       })

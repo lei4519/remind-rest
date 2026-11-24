@@ -5,8 +5,9 @@
   "main": "dist/main/index.js",
   "scripts": {
     "dev": "node scripts/dev.js",
-    "packageMac": "rm -rf ./dist && npx vite build && tsc && cp -r icon dist/icon & cp main/store.json dist/main/store.json && electron-packager . --overwrite",
-    "buildMac": "cp -r icon dist/icon && npx electron-builder --mac --arm64"
+    "packageMac": "npm run build && npx @electron/packager@20.3.0 . --overwrite",
+    "buildMac": "npm run build && npx electron-builder --mac --arm64",
+    "build": "vite build && tsc && cp main/store.json dist/main/store.json && cp -R icon dist/"
   },
   "build": {
     "appId": "rest.time.lay4519",
@@ -36,20 +37,15 @@
   },
   "dependencies": {
     "gsap": "^3.3.4",
-    "vue": "^3.0.0-beta.14",
-    "vue-router": "^4.0.0-alpha.4"
+    "vue": "^3.5.0",
+    "vue-router": "^4.5.0"
   },
   "devDependencies": {
-    "@babel/core": "^7.10.2",
-    "@babel/register": "^7.10.1",
-    "@vue/compiler-sfc": "^3.0.0-beta.14",
-    "cross-env": "^7.0.2",
-    "electron": "^9.4.4",
-    "typescript": "3.9.5",
-    "vite": "^0.20.0"
+    "@vitejs/plugin-vue": "^6.0.0",
+    "cross-env": "^7.0.3",
+    "electron": "^42.11.16",
+    "typescript": "~5.9.3",
+    "vite": "^7.3.0"
   },
-  "resolutions": {
-    "vite/selfsigned": "^2.4.1",
-    "**/rollup-plugin-terser/serialize-javascript": "^6.0.2"
-  }
+  "packageManager": "npm@11.20.0"
 }

@@ -27,7 +27,7 @@ interface SettingMsgData {
 class Tary {
   private timeType: TimeType = 'WORK'
   private tray: ElectronTary = new ElectronTary(
-    path.resolve(__dirname, '../icon/img.png')
+    path.resolve(__dirname, '../icon/img@2x.png')
   )
   private menu: Menu | null = null
   private restWindows: BrowserWindow[] | null = null
@@ -123,6 +123,7 @@ class Tary {
     }
   }
   private handleTipsMsg = (event: IpcMainEvent, {type}: TipsMsgData) => {
+    if (event.sender !== this.tipsWindow?.webContents) return
     if (type === 'CLOSE') {
       this.closeTipsWindow()
     } else if (type === 'RESET') {
@@ -136,6 +137,7 @@ class Tary {
     }
   }
   private handleRestMsg = (event: IpcMainEvent, data: RestMsgData) => {
+    if (!this.restWindows?.some(win => win.webContents === event.sender)) return
     if (data.type === 'READY') {
       this.startRestTime()
     } else if (data.type === 'CLOSE') {
@@ -150,6 +152,7 @@ class Tary {
         click: () => {
           const win = createSettingWindows(restTime, tipsTime, workTime)
           const handleSettingMsg = (event: IpcMainEvent, {rest, work, tips}: SettingMsgData) => {
+            if (event.sender !== win.webContents || ![rest, work, tips].every(n => Number.isFinite(n) && n >= 0)) return
             setTime(rest, work, tips)
             win.close()
           }
@@ -171,7 +174,7 @@ class Tary {
           this.send({
             type: 'run'
           })
-          menuItem.menu.getMenuItemById('pause').visible = true
+          menuItem.menu.getMenuItemById('pause')!.visible = true
           menuItem.visible = false
         },
       },
@@ -188,8 +191,8 @@ class Tary {
         label: '重置',
         accelerator: 'CmdOrCtrl+r',
         click: (menuItem) => {
-          menuItem.menu.getMenuItemById('play').visible = false
-          menuItem.menu.getMenuItemById('pause').visible = true
+          menuItem.menu.getMenuItemById('play')!.visible = false
+          menuItem.menu.getMenuItemById('pause')!.visible = true
           this.startWorkTime()
         },
       },
@@ -204,7 +207,7 @@ class Tary {
     this.send({
       type: 'stop'
     })
-    menuItem.menu.getMenuItemById('play').visible = true
+    menuItem.menu.getMenuItemById('play')!.visible = true
     menuItem.visible = false
   }
   send(message: ReceiveMsg | ReceiveMsg[]) {
