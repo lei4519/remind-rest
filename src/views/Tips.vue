@@ -18,7 +18,6 @@
 <script>
 import {ref, computed, nextTick, reactive} from 'vue'
 import {useRoute} from 'vue-router'
-const { ipcRenderer } = require('electron')
 
 export default {
   setup() {
@@ -32,15 +31,15 @@ export default {
       style.transform = 'translateX(-100%)'
     })
     const close = () => {
-      ipcRenderer.send(query.type, {type: 'CLOSE'})
+      window.restTimer.closeTips()
     }
     const stop = () => {
-      ipcRenderer.send(query.type, {type: 'STOP'})
+      window.restTimer.stopTips()
     }
     const reset = () => {
-      ipcRenderer.send(query.type, {type: 'RESET'})
+      window.restTimer.resetTips()
     }
-    ipcRenderer.on(query.type, (ipc, {s, done}) => {
+    window.restTimer.onTipsTick(({s, done}) => {
       time.value = s
       if (done) close()
     })

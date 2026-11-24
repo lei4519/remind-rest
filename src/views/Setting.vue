@@ -33,7 +33,6 @@
 <script>
 import { ref } from 'vue'
 import { useRoute } from 'vue-router'
-const { ipcRenderer } = require('electron')
 
 const BASE_UNIT = 60
 const SECONDS = 1000
@@ -45,7 +44,7 @@ export default {
     const work = ref(+query.work / MINUTES)
     const tips = ref(+query.tips / SECONDS)
     const save = () => {
-      ipcRenderer.send(query.type, {
+      window.restTimer.saveSettings({
         rest: rest.value * MINUTES,
         work: work.value * MINUTES,
         tips: tips.value * SECONDS

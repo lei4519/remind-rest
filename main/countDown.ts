@@ -93,3 +93,4 @@ process.on('message', (message: ReceiveMsg) => {
     }
   })
 })
+process.on('disconnect', () => c.stop())

@@ -2,12 +2,12 @@ import { app, powerMonitor } from 'electron'
 import { readDeepDir } from './utils'
 import fs from 'fs'
 import {initTray} from './tary'
-export const isDev = process.env.NODE_ENV === 'development'
+const isDev = process.env.NODE_ENV === 'development'
 // 自动刷新
 isDev && watchFile()
 
 // 隐藏dock
-app.dock.hide()
+app.dock?.hide()
 // Electron会在初始化完成并且准备好创建浏览器窗口时调用这个方法
 app.whenReady().then(() => {
   const tray = initTray()
